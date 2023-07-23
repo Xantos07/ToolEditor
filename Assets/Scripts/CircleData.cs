@@ -7,22 +7,22 @@ public class CircleData
 {
     //[Range(0, Mathf.PI * 2)]
     [Range(0, 180)]
-    public float _angle  = 0f;
+    public float Angle  = 0f;
     [Range(1, 15)]
-    public int _triangleCount = 6;
+    public int TriangleCount = 6;
     [Range(0f, 15f)]
-    public float _radius = 6f;
+    public float Radius = 6f;
     
     public Color ColorDetection = Color.blue;
     public Color ColorPawn = Color.red;
 
     public List<Vector3> CirclesPoints(bool yAxis)
     {
-        float triangleAngle = (_angle * (Mathf.PI / 180))  / _triangleCount;
+        float triangleAngle = (Angle * (Mathf.PI / 180))  / TriangleCount;
         
         List<Vector3> _pos = new List<Vector3>();
 
-        for (int i = 0; i < _triangleCount + 1; i++)
+        for (int i = 0; i < TriangleCount + 1; i++)
         {
             Vector3 pos = new Vector3();
 

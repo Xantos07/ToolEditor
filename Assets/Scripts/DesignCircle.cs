@@ -51,7 +51,7 @@ public class DesignCircle : MonoBehaviour
 
         for (int i = 0; i < vertices.Count; i++)
         {
-            vertices[i] = vertices[i] * _circleData._radius;
+            vertices[i] = vertices[i] * _circleData.Radius;
         }
         
         // Mettre à jour le mesh

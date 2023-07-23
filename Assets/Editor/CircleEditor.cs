@@ -6,24 +6,24 @@ using UnityEngine;
 public class CircleEditor : PropertyDrawer
 {
     private int graphSize = 300;
-    private CircleData _secondOrder;
+    private CircleData secondOrder;
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         return (EditorGUIUtility.singleLineHeight + 2) * 5 + graphSize;
     }
     
-    public void updateGraph(SerializedProperty property,Rect position)
+    public void UpdateGraph(SerializedProperty property,Rect position)
     {
-        _secondOrder = (CircleData) fieldInfo.GetValue(property.serializedObject.targetObject);
+        secondOrder = (CircleData) fieldInfo.GetValue(property.serializedObject.targetObject);
         
-        List<Vector3> points = _secondOrder.CirclesPoints(true);
+        List<Vector3> points = secondOrder.CirclesPoints(true);
         
          Rect center =  new Rect(position.x, position.y + 3 * (EditorGUIUtility.singleLineHeight + 2), position.width, graphSize);
          Vector3 posCenter = new Vector3(center.center.x, center.center.y + 25f, 0);
 
          for (int i = 0; i < points.Count; i++)
         {
-            Handles.color = _secondOrder.ColorDetection;
+            Handles.color = secondOrder.ColorDetection;
             Vector3 pointA = points[i] * 100f;
             Vector3 pointB = new Vector3(points[i].x,-points[i].y, 0) * 100f;
             
@@ -36,7 +36,7 @@ public class CircleEditor : PropertyDrawer
                 Handles.DrawAAConvexPolygon(posCenter,pointB + posCenter, pointBsecond+ posCenter);
             }
             
-            Handles.color = _secondOrder.ColorPawn;
+            Handles.color = secondOrder.ColorPawn;
             Handles.DrawSolidDisc(posCenter, Vector3.forward, 10f);
         }
     }
@@ -46,7 +46,7 @@ public class CircleEditor : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        _secondOrder = (CircleData) fieldInfo.GetValue(property.serializedObject.targetObject);
+        secondOrder = (CircleData) fieldInfo.GetValue(property.serializedObject.targetObject);
         
         // Calculate rects
         var angle = new Rect(position.x, position.y+ (EditorGUIUtility.singleLineHeight + 2), position.width, EditorGUIUtility.singleLineHeight);
@@ -57,13 +57,13 @@ public class CircleEditor : PropertyDrawer
 
         EditorGUI.BeginChangeCheck();
         
-        EditorGUI.PropertyField(angle, property.FindPropertyRelative("_angle"), new GUIContent("angle"));
-        EditorGUI.PropertyField(triangleCount, property.FindPropertyRelative("_triangleCount"), new GUIContent("triangleCount"));
-        EditorGUI.PropertyField(radius, property.FindPropertyRelative("_radius"), new GUIContent("radius"));
+        EditorGUI.PropertyField(angle, property.FindPropertyRelative("Angle"), new GUIContent("angle"));
+        EditorGUI.PropertyField(triangleCount, property.FindPropertyRelative("TriangleCount"), new GUIContent("triangleCount"));
+        EditorGUI.PropertyField(radius, property.FindPropertyRelative("Radius"), new GUIContent("radius"));
         EditorGUI.PropertyField(colorPawn, property.FindPropertyRelative("ColorPawn"), new GUIContent("colorPawn"));
         EditorGUI.PropertyField(colorDetection, property.FindPropertyRelative("ColorDetection"), new GUIContent("colorDetection"));
         
-        updateGraph(property,position);
+        UpdateGraph(property,position);
         
         EditorGUI.EndProperty();
     }
