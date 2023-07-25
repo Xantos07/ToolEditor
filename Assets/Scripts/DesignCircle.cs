@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 public class DesignCircle : MonoBehaviour
 {
     [SerializeField] private CircleData _circleData;
+    [SerializeField] private DetectionEnvironment _detectionEnvironment;
     
     [SerializeField] private MeshFilter _partPos;
     [SerializeField] private MeshFilter _partNeg;
@@ -10,30 +12,31 @@ public class DesignCircle : MonoBehaviour
 
     private void OnValidate()
     {
-        GenerateCircleMesh(false);
-        GenerateCircleMesh(true);
+        GenerateCircleMesh(false,_partPos);
+        GenerateCircleMesh(true,_partNeg);
+    }
+
+    private void Update()
+    {
+        GenerateCircleMesh(false,_partPos);
+        GenerateCircleMesh(true,_partNeg);
     }
 
     [ContextMenu("Generate mesh")]
-    void GenerateCircleMesh(bool positif)
+    void GenerateCircleMesh(bool positif, MeshFilter meshFilter)
     {
         Mesh mesh = new Mesh();
         
         //vertices
-        List<Vector3> vertices = new List<Vector3>();
-        
-        vertices.Add(Vector3.zero);
-        vertices.AddRange(_circleData.CirclesPoints(false));
+        List<Vector3> vertices = new List<Vector3> {Vector3.zero};
+
+        vertices.AddRange(_detectionEnvironment.DetectElement(_circleData,true));
         
         if(!positif)
         {
-            vertices = new List<Vector3>();
-            
-            vertices.Add(Vector3.zero);
-            vertices.AddRange(_circleData.CirclesPoints(false));
-            
-            for (int i = 0; i < vertices.Count; i++)
-                vertices[i] = new Vector3(vertices[i].x, 0, -vertices[i].z);
+            vertices = new List<Vector3> {Vector3.zero};
+
+            vertices.AddRange(_detectionEnvironment.DetectElement(_circleData,false));
         }
 
         //triangles 
@@ -49,22 +52,14 @@ public class DesignCircle : MonoBehaviour
         
         triangles[^1] = 0;
 
-        for (int i = 0; i < vertices.Count; i++)
-        {
-            vertices[i] = vertices[i] * _circleData.Radius;
-        }
-        
         // Mettre à jour le mesh
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles;
 
         if(positif)
             FlipNormal(mesh);
-
-        if(positif)
-            _partPos.mesh = mesh;
-        else
-            _partNeg.mesh = mesh;
+        
+        meshFilter.mesh = mesh;
     }
 
     void FlipNormal(Mesh mesh)
