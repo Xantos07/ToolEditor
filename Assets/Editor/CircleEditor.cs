@@ -18,8 +18,8 @@ public class CircleEditor : PropertyDrawer
         
         List<Vector3> points = secondOrder.HalfCirclePoints(Orientation.XY,true);
         
-         Rect center =  new Rect(position.x, position.y + 3 * (EditorGUIUtility.singleLineHeight + 2), position.width, graphSize);
-         Vector3 posCenter = new Vector3(center.center.x, center.center.y + 25f, 0);
+         Rect center =  new Rect(position.x, position.y , position.width, graphSize);
+         Vector3 posCenter = new Vector3(center.center.x, center.center.y + 125f, 0);
 
          for (int i = 0; i < points.Count; i++)
         {
@@ -50,14 +50,16 @@ public class CircleEditor : PropertyDrawer
         var angle = new Rect(position.x, position.y+ (EditorGUIUtility.singleLineHeight + 2), position.width, EditorGUIUtility.singleLineHeight);
         var triangleAmount = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2)*2, position.width, EditorGUIUtility.singleLineHeight);
         var radius = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2)*3, position.width, EditorGUIUtility.singleLineHeight);
-        var colorPawn = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2) *4, position.width, EditorGUIUtility.singleLineHeight);
-        var colorDetection = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2)* 5, position.width, EditorGUIUtility.singleLineHeight);
+        var fragment = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2)*4, position.width, EditorGUIUtility.singleLineHeight);
+        var colorPawn = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2) *5, position.width, EditorGUIUtility.singleLineHeight);
+        var colorDetection = new Rect(position.x, position.y + (EditorGUIUtility.singleLineHeight + 2)* 6, position.width, EditorGUIUtility.singleLineHeight);
 
         EditorGUI.BeginChangeCheck();
         
         EditorGUI.PropertyField(angle, property.FindPropertyRelative("Angle"), new GUIContent("angle"));
         EditorGUI.PropertyField(triangleAmount, property.FindPropertyRelative("TriangleAmount"), new GUIContent("triangleCount"));
         EditorGUI.PropertyField(radius, property.FindPropertyRelative("Radius"), new GUIContent("radius"));
+        EditorGUI.PropertyField(fragment, property.FindPropertyRelative("Fragment"), new GUIContent("fragment"));
         EditorGUI.PropertyField(colorPawn, property.FindPropertyRelative("ColorPawn"), new GUIContent("colorPawn"));
         EditorGUI.PropertyField(colorDetection, property.FindPropertyRelative("ColorDetection"), new GUIContent("colorDetection"));
         

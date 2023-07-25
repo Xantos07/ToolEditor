@@ -23,26 +23,21 @@ public class DesignCircle : MonoBehaviour
     }
 
     [ContextMenu("Generate mesh")]
-    void GenerateCircleMesh(bool positif, MeshFilter meshFilter)
+    private void GenerateCircleMesh(bool positif, MeshFilter meshFilter)
     {
         Mesh mesh = new Mesh();
         
         //vertices
         List<Vector3> vertices = new List<Vector3> {Vector3.zero};
 
-        vertices.AddRange(_detectionEnvironment.DetectElement(_circleData,true));
-        
-        if(!positif)
-        {
-            vertices = new List<Vector3> {Vector3.zero};
-
-            vertices.AddRange(_detectionEnvironment.DetectElement(_circleData,false));
-        }
+        vertices.AddRange(positif
+            ? _detectionEnvironment.DetectElement(_circleData, true)
+            : _detectionEnvironment.DetectElement(_circleData, false));
 
         //triangles 
         triangles = new int[(vertices.Count-1) * 3];
 
-        // Création des triangle
+        // Création des triangles
         for (int i = 0; i < vertices.Count -1; i++)
         {
             triangles[0] = 0;
@@ -56,13 +51,12 @@ public class DesignCircle : MonoBehaviour
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles;
 
-        if(positif)
-            FlipNormal(mesh);
+        if(positif) FlipNormal(mesh);
         
         meshFilter.mesh = mesh;
     }
 
-    void FlipNormal(Mesh mesh)
+    private void FlipNormal(Mesh mesh)
     {
         Vector3[] normals = mesh.normals;
         for (int i = 0; i < normals.Length; i++)
@@ -81,5 +75,15 @@ public class DesignCircle : MonoBehaviour
         mesh.triangles = trianglesFlip;
 
         mesh.RecalculateBounds();
+    }
+
+    private void OnDrawGizmos()
+    {
+        List<Vector3> points = _circleData.MultipleHalfCirclePoints();
+
+        foreach (var point in points)
+        {
+            Gizmos.DrawSphere(point, 0.1f);
+        }
     }
 }
