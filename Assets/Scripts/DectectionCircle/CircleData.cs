@@ -24,21 +24,21 @@ namespace ToolEditor
         /// <returns></returns>
         public List<Vector3> HalfCirclePoints(Orientation orientation, bool positif)
         {
-            float radian = Mathf.PI / 180f;
-            float triangleRad = Angle * radian / TriangleAmount;
+            float radian = Mathf.PI / 180f; 
+            float pointRad = (Angle * radian) / TriangleAmount ; 
 
-            List<Vector3> _pos = new List<Vector3>();
-
-            for (int i = 0; i < TriangleAmount; i++)
+            List<Vector3> _pos = new List<Vector3>(); 
+            Vector3 newPos = new Vector3();
+            
+            for (int i = 0; i < (TriangleAmount +1); i++)
             {
-                Vector3 newPos = new Vector3();
-                float cos = Mathf.Cos(i * triangleRad);
-                float sin = Mathf.Sin(i * triangleRad);
+                float cos = Mathf.Cos(i * pointRad); 
+                float sin = Mathf.Sin(i * pointRad); 
 
                 if (positif)
                     newPos = orientation == Orientation.XY ? new Vector3(cos, sin, 0) : new Vector3(cos, 0, sin);
                 else
-                    newPos = orientation == Orientation.XY ? new Vector3(cos, sin, 0) : new Vector3(cos, 0, -sin);
+                    newPos = orientation == Orientation.XY ? new Vector3(cos, -sin, 0) : new Vector3(cos, 0, -sin);
 
                 _pos.Add(newPos);
             }
