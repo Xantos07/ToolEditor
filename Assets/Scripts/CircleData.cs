@@ -77,9 +77,3 @@ public class CircleData
         return Radius / Fragment;
     }
  }
-
-public enum Orientation
-{
-    XY = 0,
-    XZ = 1,
-}

@@ -14,7 +14,7 @@ public class DetectionEnvironment : MonoBehaviour
             RaycastHit hit;
             float currentRadius = circleData.Radius;
             
-            if (Physics.Raycast(transform.position, direction, out hit, circleData.Radius))
+            if (Physics.Raycast(position, direction, out hit, circleData.Radius))
             {
                 if (hit.transform != null)
                 {
